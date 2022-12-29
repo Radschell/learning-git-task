@@ -42,3 +42,4 @@ cubes = [number * number * number for number in list]
 print(f"Te szesciany {cubes} uzyskano dzięki list comprehension")
 
 print("nowe zmiany")
+print ("jeszcze jedne zmiany")

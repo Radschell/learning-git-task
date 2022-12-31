@@ -1,0 +1,1 @@
+print("Zadanie z palindromami")

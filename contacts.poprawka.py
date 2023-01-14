@@ -40,4 +40,11 @@ def create_contacts(type_of_contact, quantity):
     return contacts
 
 contacts = create_contacts("Base",5)
-print(contacts)
+
+
+for contact in contacts:
+   print("------")
+   print(f"Name {contact.name}")
+   print(f"Phone {contact.phone}")
+   print(f"Email {contact.email}")
+   print(contact.contact())

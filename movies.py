@@ -1,3 +1,5 @@
+import random
+
 class Movie:
 
    def __init__(self, title, year, genre, views):
@@ -39,3 +41,47 @@ movies_list.append(series1)
 movies_list.append(series2)
 
 print(movies_list[0])
+
+
+
+
+def get_movies():
+    for movie in movies_list:
+        if isinstance(movie, Movie):
+            print(movie)
+
+def get_series():
+    for series in movies_list:
+        if isinstance(series, Series):
+            print(series)
+
+def search():
+    title = input("Enter the title of the movie: ")
+    for movie in movies_list:
+        if movie.title == title:
+            return movie
+    return None
+
+
+def generate_views():
+    movie = random.choice(movies_list)
+    random_views = random.randint(1,100)
+    movie.views += random_views
+
+def generate_views_ten_times():
+    for i in range(10):
+        generate_views()
+
+def movie_views(movie):
+    return movie.views
+
+def top_titles():
+    n = int(input("Enter the number of top movies to be returned: "))
+    movies_list.sort(key=movie_views, reverse=True)
+    for i in range(n):
+        print(movies_list[i])
+
+
+generate_views()
+top_titles()
+

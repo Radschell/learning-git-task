@@ -77,3 +77,30 @@ if __name__ == '__main__':
     conn = sqlite3.connect('database.db')
     add_revenue(conn, "BK120", 12000, 10000)
     conn.close()
+
+
+def get_restaurant_details(conn, name):
+    try:
+        c = conn.cursor()
+        c.execute(f"SELECT * FROM Restaurants WHERE Name = '{name}'")
+        restaurant = c.fetchone()
+        c.execute(f"SELECT * FROM Revenue WHERE Name = '{name}'")
+        revenue = c.fetchone()
+        if restaurant and revenue:
+            print(f"Details for {name}:")
+            print(f"Name: {restaurant[0]}")
+            print(f"Brand: {restaurant[1]}")
+            print(f"Address: {restaurant[2]}")
+            print(f"Owner: {restaurant[3]}")
+            print(f"Quarter1 Revenue: {revenue[1]}")
+            print(f"Quarter2 Revenue: {revenue[2]}")
+            print(f"Total Revenue: {revenue[3]}")
+        else:
+            print(f"No details found for {name}")
+    except sqlite3.Error as e:
+        print(f"Error getting details for {name}: {e}")
+
+if __name__ == '__main__':
+    conn = sqlite3.connect('database.db')
+    get_restaurant_details(conn, "BK120")
+    conn.close()

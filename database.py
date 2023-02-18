@@ -104,3 +104,35 @@ if __name__ == '__main__':
     conn = sqlite3.connect('database.db')
     get_restaurant_details(conn, "BK120")
     conn.close()
+
+#zmieniam wlasciciela restuarcji, operacji modyfikacja recordu
+
+def modify_restaurant_owner(conn, name, new_owner):
+    try:
+        c = conn.cursor()
+        c.execute(f"UPDATE Restaurants SET Owner = '{new_owner}' WHERE Name = '{name}'")
+        conn.commit()
+        print(f"{c.rowcount} record(s) updated successfully.")
+    except sqlite3.Error as e:
+        print(f"Error updating record for {name}: {e}")
+
+if __name__ == '__main__':
+    conn = sqlite3.connect('database.db')
+    modify_restaurant_owner(conn, "BK120", "Johny Walker")
+    conn.close()
+
+#usuwam record oodnosnie wybranej restauracji
+
+def delete_restaurant(conn, name):
+    try:
+        c = conn.cursor()
+        c.execute(f"DELETE FROM Restaurants WHERE Name = '{name}'")
+        conn.commit()
+        print(f"{c.rowcount} record(s) deleted successfully.")
+    except sqlite3.Error as e:
+        print(f"Error deleting records for {name}: {e}")
+
+if __name__ == '__main__':
+    conn = sqlite3.connect('database.db')
+    delete_restaurant(conn, "Mc130")
+    conn.close()

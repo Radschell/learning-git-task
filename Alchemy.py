@@ -30,3 +30,46 @@ class CleanMeasure(Base):
 
 # create the tables in the database
 Base.metadata.create_all(engine)
+
+import csv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from your_module import CleanStation
+
+# create an engine to connect to the database
+engine = create_engine('sqlite:///mydatabase.db')
+
+# create a session maker
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# specify the path to the CSV file
+csv_file_path = '/C:/Users/HOME/Desktop/Kodilla/learning-git-task/clean_stations.csv'
+
+with open(csv_file_path, 'r') as f:
+    reader = csv.reader(f)
+    next(reader)  
+    for row in reader:
+        # create a new instance of CleanStation for each row of data
+        station = CleanStation(station=row[0], latitude=float(row[1]), longitude=float(row[2]), 
+                               elevation=float(row[3]), name=row[4], country=row[5], state=row[6])
+        session.add(station)
+
+# commit the changes and close the session
+session.commit()
+session.close()
+
+import sqlite3
+
+def get_stations_data(sql_statement):
+    # create a connection to the database
+    conn = sqlite3.connect('mydatabase.db')
+    cursor = conn.cursor()
+
+    # execute the SQL statement and retrieve the data
+    cursor.execute(sql_statement)
+    data = cursor.fetchall()
+
+    # close the connection and return the data
+    conn.close()
+    return data

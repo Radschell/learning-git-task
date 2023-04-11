@@ -73,3 +73,31 @@ def get_stations_data(sql_statement):
     # close the connection and return the data
     conn.close()
     return data
+
+import csv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from your_module import CleanMeasure
+
+# create an engine to connect to the database
+engine = create_engine('sqlite:///mydatabase.db')
+
+# create a session maker
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# specify the path to the CSV file
+csv_file_path = '/C:/Users/HOME/Desktop/Kodilla/learning-git-task/clean_measure.csv'
+
+# read data from the CSV file and insert into the database
+with open(csv_file_path, 'r') as f:
+    reader = csv.reader(f)
+    next(reader)  # skip header row
+    for row in reader:
+        # create a new instance of CleanMeasure for each row of data
+        measure = CleanMeasure(station=row[0], date=row[1], precip=float(row[2]), tobs=float(row[3]))
+        session.add(measure)
+
+# commit the changes and close the session
+session.commit()
+session.close()

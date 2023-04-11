@@ -101,3 +101,31 @@ with open(csv_file_path, 'r') as f:
 # commit the changes and close the session
 session.commit()
 session.close()
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from your_module import CleanMeasure
+
+# create an engine to connect to the database
+engine = create_engine('sqlite:///mydatabase.db')
+
+# create a session maker
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# specify the station name and date
+station_phrase = 'WAIKIKI'
+record_date = '2010-01-01'
+
+# query the clean_measure table for a record with the specified station name and date
+record = session.query(CleanMeasure).filter(CleanMeasure.station.like('%{}%'.format(station_phrase)), CleanMeasure.date == record_date).first()
+
+# print the precipitation and tobs values for the record
+if record:
+    print('Station: {}, Date: {}, Precipitation: {}, TOBS: {}'.format(record.station, record.date, record.precip, record.tobs))
+else:
+    print('No record found for station {} and date {}'.format(station_phrase, record_date))
+
+# close the session
+session.close()
+

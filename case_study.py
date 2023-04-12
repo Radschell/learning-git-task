@@ -11,15 +11,14 @@ future_price = price * (1 + rate) ** years
 
 print("The apartment will cost", round(future_price, 2), "PLN in 5 years.")
 
-#potem liczymy ile musze odkladac miseicznie aby uzyskac 153153.79 zlote (cz<li przewidywany koszt mieszakania")
 
 import numpy as np
 
-PV = 120000
+PV = 153862.4
 r = 0.12
 n = 12
 t = 5
-FV = 153153.79
 
-PMT = (FV * r / n) / ((1 + r / n) ** (n*t) - 1)
-print("You need to put", round(PMT, 2), "PLN into the deposit each month to gather 153153.79 PLN in 5 years.")
+PMT = PV * (r / n) * (1 + r / n) ** (n*t) / ((1 + r / n) ** (n*t) - 1)
+print("You need to put", round(PMT, 2), "PLN into the deposit each month to be able to afford the apartment in 5 years.")
+

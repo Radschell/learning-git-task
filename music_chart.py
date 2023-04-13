@@ -58,3 +58,27 @@ print("The year that appears most frequently on the list is:", most_common_year)
 year_range = official_chart.loc[(official_chart['Year'] >= 1960) & (official_chart['Year'] <= 1990)]
 num_positions = len(year_range)
 print("The number of positions between 1960 and 1990 is:", num_positions)
+
+#najmlodzsy album
+# find the record with the most recent year to date
+most_recent_record = official_chart.loc[official_chart['Year'].idxmax()]
+print("The record with the most recent year to date is:")
+print(most_recent_record)
+
+#najstarszy album per artysta
+
+
+# create a new DataFrame to store the oldest albums
+oldest_albums = pd.DataFrame(columns=official_chart.columns)
+
+# group the records by artist and find the oldest album for each artist and csv export
+for artist, group in official_chart.groupby('Artist'):
+    oldest_album = group.loc[group['Year'].idxmin()]
+    oldest_albums = oldest_albums.append(oldest_album)
+
+# display the result
+print("The oldest album of each artist is:")
+print(oldest_albums)
+
+# export the result to a CSV file
+oldest_albums.to_csv('oldest_albums.csv')

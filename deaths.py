@@ -107,3 +107,66 @@ plt.ylabel('Number of Records')
 
 # display the chart
 plt.show()
+
+#TASK 5 adding other databases
+
+import pandas as pd
+
+# replace the URLs with the actual URLs you want to scrape
+url_population = 'https://simple.wikipedia.org/wiki/List_of_U.S._states_by_population'
+url_abbreviations = 'https://en.wikipedia.org/wiki/List_of_U.S._state_and_territory_abbreviations'
+
+# read HTML tables from the URLs
+dfs_population = pd.read_html(url_population)
+dfs_abbreviations = pd.read_html(url_abbreviations)
+
+# extract the first table from the list of DataFrames
+df_population = dfs_population[0]
+
+# drop unnecessary columns
+df_population.drop(['Rank', 'Percentage', 'Population density'], axis=1, inplace=True)
+
+# rename columns to match the column names in your original DataFrame
+df_population.rename(columns={'State': 'state', 'Population': 'population'}, inplace=True)
+
+# convert the population column to integers
+df_population['population'] = df_population['population'].str.replace(',', '').astype(int)
+
+# set the state column as the index
+df_population.set_index('state', inplace=True)
+
+# extract the necessary columns from the abbreviations DataFrame
+df_abbreviations = dfs_abbreviations[0][['United States postal abbreviations', 'ANSI']]
+
+# rename columns to match the column names in your original DataFrame
+df_abbreviations.rename(columns={'United States postal abbreviations': 'state'}, inplace=True)
+
+# set the state column as the index
+df_abbreviations.set_index('state', inplace=True)
+
+# merge the two DataFrames based on the state column
+df_merged = pd.merge(df_population, df_abbreviations, on='state')
+
+# add the ANSI column to the original DataFrame
+df_population['ANSI'] = df_merged['ANSI']
+
+# display the resulting DataFrame
+print(df_population.head())
+
+
+import pandas as pd
+
+# Load the HTML table from the URL into a list of DataFrames
+dfs = pd.read_html('https://simple.wikipedia.org/wiki/List_of_U.S._states_by_population')
+
+# Select the first DataFrame from the list, which contains the population data
+df_population = dfs[0]
+
+# Drop the unnecessary columns
+df_population = df_population.drop(['Rank', '% of US', '−'], axis=1)
+
+# Rename the columns to match the existing DataFrame
+df_population = df_population.rename(columns={'State/Territory': 'state', 'Population estimate': 'population'})
+
+# Merge the population data into the original DataFrame
+df_merged = pd.merge(df_original, df_population, on='state', how='left')

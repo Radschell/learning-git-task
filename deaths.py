@@ -48,3 +48,12 @@ df = pd.read_csv(csv_path, dtype=data)
 
 # display the DataFrame
 print(df.head())
+
+# Adding function to count number of incidents per race
+df = pd.read_csv(csv_path, dtype=data)
+
+# group the records by race and count the number of records per race
+race_counts = df.groupby('race').size().reset_index(name='counts')
+
+# display the race counts DataFrame
+print(race_counts)

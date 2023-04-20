@@ -73,3 +73,37 @@ race_with_most_mental_illness_records = mental_illness_records.loc[mental_illnes
 
 # print the race with the highest number of records where signs_of_mental_illness is True
 print("The race with the highest number of records where signs_of_mental_illness is True is:", race_with_most_mental_illness_records)
+
+#TASK4 adding column with days of the week
+
+# use read_csv function to import data from CSV file to DataFrame
+df = pd.read_csv(csv_path, dtype=data)
+
+# convert the date column to a pandas datetime object
+df['date'] = pd.to_datetime(df['date'])
+
+# create a new column with the day of the week corresponding to the date column
+df['day_of_week'] = df['date'].dt.day_name()
+
+# print the first few rows of the updated DataFrame
+print(df.head())
+
+# group the DataFrame by day of the week and count the number of records in each group
+records_per_day = df.groupby('day_of_week').size()
+
+# print the resulting Series object containing the counts per day of the week
+print(records_per_day)
+
+import matplotlib.pyplot as plt
+
+# create a bar chart with the counts per day of the week
+records_per_day = records_per_day.reindex(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+records_per_day.plot(kind='bar')
+
+# set the chart title and axes labels
+plt.title('Number of Records per Day of the Week')
+plt.xlabel('Day of the Week')
+plt.ylabel('Number of Records')
+
+# display the chart
+plt.show()
